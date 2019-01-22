@@ -1,0 +1,70 @@
+import { put, call, cancel, takeEvery, all } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import axios from 'axios';
+
+import * as actionTypes from '../actionTypes';
+
+/*
+Sagas logic notes
+- Load array of multiplayer games (loadMultiplayerGames saga) once when App component is mounted.
+- When user is added add his/her data, games list and games data to the store (userAdd saga).
+- When user is deleted remove user data and games list from the store (userDelete saga).
+- Each time when a user is added or deleted recalculate intersection (calculateIntersection saga).
+*/
+
+function* loadMultiplayerGames() {
+    yield put({ type: actionTypes.R_START_LOAD_MULTIPLAYER_GAMES });
+
+    const response = yield call(axios.get, '/multiplayergames');
+    if (response === undefined) {
+        yield cancel();
+    }
+
+    yield put({
+        type: actionTypes.R_FINISH_LOAD_MULTIPLAYER_GAMES,
+        payload: response.data,
+    });
+}
+
+function* userAdd(action) {
+    yield put({ type: actionTypes.R_START_USER_ADD });
+
+    const { vanityurl } = action.payload;
+
+    const response = yield call(axios.get, `/userownedgames/${vanityurl}`);
+    if (response === undefined) {
+        yield cancel();
+    }
+
+    yield put({
+        type: actionTypes.R_FINISH_USER_ADD,
+        payload: response.data,
+    });
+
+    yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
+}
+
+function* userDelete(action) {
+    yield put({
+        type: actionTypes.R_USER_DELETE,
+        payload: action.payload,
+    });
+
+    yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
+}
+
+function* calculateIntersection(action) {
+    yield put({ type: actionTypes.R_START_INTERSECTION });
+    //calculating intersection should not take less than 1.3 sec to prevent UI blinking
+    yield all([delay(1300), put({ type: actionTypes.R_DO_INTERSECTION })]);
+    yield put({ type: actionTypes.R_FINISH_INTERSECTION });
+}
+
+export default function* rootSaga() {
+    yield all([
+        takeEvery(actionTypes.S_LOAD_MULTIPLAYER_GAMES, loadMultiplayerGames),
+        takeEvery(actionTypes.S_USER_ADD, userAdd),
+        takeEvery(actionTypes.S_USER_DELETE, userDelete),
+        takeEvery(actionTypes.S_CALCULATE_INTERSECTION, calculateIntersection),
+    ]);
+}

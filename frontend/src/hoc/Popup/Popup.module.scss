@@ -1,0 +1,103 @@
+@import '../../variables.scss';
+
+.Popup {
+    position: fixed;
+    z-index: 200;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 1px #ccc;
+    background-color: white;
+    box-sizing: border-box;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    animation: openPopup 0.4s ease-out forwards;
+
+}
+
+@media (min-width: $bp1) {
+    .Popup {
+        width: 60%;
+        top: 15%;
+        left: 20%;
+    }
+}
+
+.PopupHeader {
+    display: flex;
+    align-items: center;
+    height: 4.375rem;
+    padding: 0 1.25rem;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.PopupTitle {
+    color: #4a4a4a;
+    margin: 0;
+    flex-grow: 1;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.Close {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0;
+    padding: 0;
+    opacity: 0.3;
+}
+
+.Close:hover {
+    opacity: 1;
+}
+
+.Close:hover,
+.Close:focus {
+    text-decoration: none;
+}
+
+.Close:before,
+.Close:after {
+    position: absolute;
+    top: 0;
+    left: 0.8rem;
+    content: ' ';
+    height: 1.6rem;
+    width: 0.1rem;
+    background-color: #333;
+}
+
+.Close:before {
+    transform: rotate(45deg);
+}
+
+.Close:after {
+    transform: rotate(-45deg);
+}
+
+.PopupBody {
+    padding: 1.25rem;
+    min-height: 3rem;
+}
+
+@keyframes openPopup {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,37 @@
+@import '../../variables.scss';
+
+.Container {
+    background-color: #363636;
+    padding: 1rem;
+}
+
+.Title {
+    color: #ffb337;
+    margin: 0 0 1rem 0;
+    white-space: nowrap;
+}
+
+.List {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-top: 1rem;
+    margin-left: -0.6rem;
+}
+
+@media (min-width: $bp1) {
+    .Container {
+        display: flex;
+        align-items: flex-start;
+        align-content: flex-start;
+    }
+
+    .Controls {
+        margin-right: 3rem;
+    }
+
+    .List {
+        margin-left: 0;
+        margin-top: 0;
+    }
+}
