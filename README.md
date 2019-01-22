@@ -29,6 +29,7 @@ REDIS_PORT='6379'
 # Run locally
 1. Run `yarn start` in the backend folder
 2. Run `yarn start` in the frontend folder
+
 Enjoy :smiley:
 
 # Accounts for testing
