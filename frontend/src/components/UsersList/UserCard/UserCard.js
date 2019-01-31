@@ -29,11 +29,19 @@ const UserCard = props => {
     let avatar = (
         <img className={classes.Avatar} src={props.avatar} alt={props.name} />
     );
+
     if (props.isLoading) {
         cardClasses.push(classes.Loading);
         vanityurlClasses.push(classes.Name);
         avatar = <Spinner />;
-    } else if (props.shake) {
+    } 
+    
+    if (props.errorMessage) {
+        cardClasses.push(classes.Failed);
+        avatar = <Spinner freeze />;
+    } 
+    
+    if (props.shake) {
         cardClasses.push(classes.Shake);
     }
 
@@ -44,6 +52,7 @@ const UserCard = props => {
             </div>
             <div key="names-container" className={classes.NamesContainer}>
                 <div className={classes.Name}>{props.name}</div>
+                <div className={classes.ErrorMessage}>{props.errorMessage}</div>
                 <div className={vanityurlClasses.join(' ')}>
                     {props.vanityurl}
                 </div>
@@ -63,6 +72,7 @@ const UserCard = props => {
 UserCard.propTypes = {
     steamId: PropTypes.string,
     vanityurl: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     name: PropTypes.string,
     avatar: PropTypes.string,

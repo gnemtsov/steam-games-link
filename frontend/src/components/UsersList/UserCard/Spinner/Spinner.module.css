@@ -12,6 +12,21 @@
     animation: Loader .6s linear infinite;
 }
 
+.Loader.Freeze div {
+    animation: none;
+}
+
+.Freeze div:nth-child(2), .Freeze div:nth-child(3) {
+    opacity: 0.2;
+    transform: rotate(-10deg);
+}
+
+.Freeze div:nth-child(1), .Freeze div:nth-child(4) {
+    background-color: #ff6565;
+    transform: rotate(10deg);
+}
+
+
 .Loader div:nth-child(1) {
     top: 8px;
     left: 8px;
@@ -35,7 +50,6 @@
     left: 36px;
     animation-delay: 0s;
 }
-
 
 @keyframes Loader {
 

@@ -1,8 +1,8 @@
 .Container {
     border-radius: 6px;
     overflow: hidden;
-    background-color: #5f5f5f;
     display: flex;
+    background-color: #5f5f5f;
     align-items: flex-start;
     margin: 0.6rem;
     padding: 0;
@@ -32,6 +32,14 @@
     transition: font-size 500ms;
 }
 
+.Loading .Name {
+    font-size: 0rem;
+}
+
+.Failed .Name {
+    display: none;
+}
+
 .Vanityurl {
     padding: 0 1rem;
     color: #bbb;
@@ -39,15 +47,26 @@
     transition: font-size 500ms;
 }
 
-.Container.Loading {
-    .Name {
-        font-size: 0rem;
-    }
-
-    .Vanityurl {
-        font-size: 1.5rem;
-    }
+.Loading .Vanityurl {
+    font-size: 1.5rem;
 }
+
+.Failed .Vanityurl {
+    transition: none;
+}
+
+.ErrorMessage {
+    display: none;
+    padding: 0.2rem 1rem 0 1rem;
+    color: #ff6565;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.Failed .ErrorMessage {
+    display: block;
+}
+
 
 .Remove {
     position: relative;

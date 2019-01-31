@@ -32,7 +32,18 @@ function* userAdd(action) {
 
     yield put({ type: actionTypes.R_START_USER_ADD, payload: { vanityurl } });
 
-    const response = yield call(axios.get, `/userownedgames/${vanityurl}`);
+    let response;
+    try {
+        response = yield call(axios.get, `/userownedgames/${vanityurl}`);
+    } catch (errorMessage) {
+        yield put({
+            type: actionTypes.R_FINISH_USER_ADD,
+            payload: { errorMessage, vanityurl },
+        });
+
+        yield cancel();
+    }
+
     if (response === undefined) {
         yield cancel();
     }

@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 const initialState = {
     multiPlayerGames: [], //an array of multiplayer games, ['appId', 'appId'...]
     games: {}, //a handbook games data, {[appId]: {app-data}}
-    users: [], //an array of users, [isLoading, ...user-data, games: ['appId', 'appId'...]}]
+    users: [], //an array of users, [isLoading, errorMessage, ...user-data, games: ['appId', 'appId'...]}]
     intersection: [], //an array of displayed games, ['appId', 'appId'...]
     isMPGamesLoading: false, //is loading multiplayer games from API?
     isMPGamesStaled: false, //the first user has been added and MPGames are still loading?
@@ -35,7 +35,12 @@ const startUserAdd = (state, action) => {
 
 const finishUserAdd = (state, action) => {
     const userData = action.payload;
-    const gamesIds = Object.keys(userData.games);
+
+    //game ids
+    let gamesIds = [];
+    if (userData.games !== undefined) {
+        gamesIds = Object.keys(userData.games);
+    }
 
     //fill in new user data and games
     const users = state.users.map(user => {

@@ -24,10 +24,23 @@ class App extends Component {
 
     componentDidMount() {
         //Set up axios interceptor to catch all errors
-        //In case of error axios promise will resolve with undefined value
+        //If response was received and can be handled axios promise will reject with error message
+        //In case of other errors axios promise will resolve with undefined value and popup will be shown
         this.resInterceptor = axios.interceptors.response.use(
             res => res,
             error => {
+                if (error.response && error.response.data !== undefined) {
+                    const message = error.response.data;
+                    const handledErrorsMessages = [
+                        'User not found',
+                        'Not a public profile',
+                    ];
+
+                    if (handledErrorsMessages.includes(message)) {
+                        return Promise.reject(message);
+                    }
+                }
+
                 if (process.env.NODE_ENV === 'production') {
                     this.props.showError('Something went wrong!');
                     //TODO report errors in production

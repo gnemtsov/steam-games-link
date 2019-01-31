@@ -19,7 +19,7 @@ class GamesList extends Component {
     };
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.userCount < 2) {
+        if (this.props.userCount + nextProps.userCount <= 3) {
             return nextProps.userCount !== this.props.userCount;
         } else {
             return (
