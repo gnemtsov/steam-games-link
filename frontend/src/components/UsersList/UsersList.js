@@ -18,7 +18,6 @@ class UsersList extends Component {
 
     static propTypes = {
         title: PropTypes.string,
-        isMPGamesStaled: PropTypes.bool.isRequired,
         users: PropTypes.arrayOf(
             PropTypes.shape({
                 steamId: PropTypes.string,
@@ -35,7 +34,7 @@ class UsersList extends Component {
     };
 
     state = {
-        shakingUsers: [], //users, who were added twice [{vanityurl, timerId}...] 
+        shakingUsers: [], //users, who were added twice [{vanityurl, timerId}...]
     };
 
     componentWillUnmount() {
@@ -125,7 +124,6 @@ class UsersList extends Component {
 
 const mapStateToProps = state => {
     return {
-        isMPGamesStaled: state.isMPGamesStaled,
         users: state.users,
     };
 };

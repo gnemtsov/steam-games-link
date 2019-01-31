@@ -38,6 +38,7 @@ Enjoy :smiley:
 gwellir
 molotoko
 Tryr
+2f2f
 ```
 
 Profiles with no games

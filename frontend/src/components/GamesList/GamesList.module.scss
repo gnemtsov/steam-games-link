@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .Wrapper {
     overflow-x: hidden;
 }
@@ -13,7 +15,16 @@
     font-size: 1.2rem;
     font-weight: 700;
     box-sizing: border-box;
-        width: 100vw;
+    width: 100vw;
+}
+
+.Error {
+    color: $error-color;
+    padding: 2rem 1rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    box-sizing: border-box;
+    width: 100vw;
 }
 
 .List {
@@ -21,5 +32,5 @@
     display: flex;
     flex-wrap: wrap;
     box-sizing: border-box;
-        width: 100vw;
+    width: 100vw;
 }

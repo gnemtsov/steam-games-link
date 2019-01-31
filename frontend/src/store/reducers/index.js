@@ -7,6 +7,7 @@ const initialState = {
     intersection: [], //an array of displayed games, ['appId', 'appId'...]
     isMPGamesLoading: false, //is loading multiplayer games from API?
     isMPGamesStaled: false, //the first user has been added and MPGames are still loading?
+    isCalculating: false, //is intersection calculation pending?
     errorMessage: null, //error message, null || string
 };
 
@@ -37,7 +38,7 @@ const finishUserAdd = (state, action) => {
     const userData = action.payload;
 
     //game ids
-    let gamesIds = [];
+    let gamesIds;
     if (userData.games !== undefined) {
         gamesIds = Object.keys(userData.games);
     }
@@ -57,19 +58,22 @@ const finishUserAdd = (state, action) => {
 
     //fill in games "handbook" with new games data
     let newGames = {};
-    gamesIds.forEach(appId => {
-        newGames[appId] = {
-            appId,
-            ...userData.games[appId],
-            nameLowerCase: userData.games[appId].name.toLowerCase(), //for sorting
-        };
-    });
+    if (gamesIds !== undefined) {
+        gamesIds.forEach(appId => {
+            newGames[appId] = {
+                appId,
+                ...userData.games[appId],
+                nameLowerCase: userData.games[appId].name.toLowerCase(), //for sorting
+            };
+        });
+    }
     const games = { ...state.games, ...newGames };
 
     return {
         ...state,
         games,
         users,
+        isCalculating: userData.errorMessage === undefined,
         isMPGamesStaled: state.isMPGamesLoading, //set to true if multiplayer games still loading
     };
 };
@@ -80,14 +84,16 @@ const userDelete = (state, action) => {
     const users = state.users.slice();
     users.splice(index, 1);
 
-    return { ...state, users };
+    return { ...state, users, isCalculating: true };
 };
 
 const doIntersection = state => {
     let intersection = [];
 
     //gather all users's games into an array of arrays
-    let allArr = state.users.map(user => user.games);
+    let allArr = state.users
+        .filter(({ games }) => games !== undefined)
+        .map(({ games }) => games);
 
     if (allArr.length > 1) {
         //add multiplayer games
@@ -110,7 +116,7 @@ const doIntersection = state => {
         });
     }
 
-    return { ...state, intersection };
+    return { ...state, intersection, isCalculating: false };
 };
 
 const showError = (state, action) => {

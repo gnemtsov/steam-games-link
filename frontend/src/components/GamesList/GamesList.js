@@ -9,6 +9,7 @@ import classes from './GamesList.module.scss';
 
 class GamesList extends Component {
     static propTypes = {
+        isMPGamesStaled: PropTypes.bool.isRequired,
         games: PropTypes.shape({
             name: PropTypes.string,
             logo: PropTypes.string,
@@ -16,36 +17,32 @@ class GamesList extends Component {
         uniqueKey: PropTypes.string.isRequired,
         userCount: PropTypes.number.isRequired,
         intersection: PropTypes.arrayOf(PropTypes.string).isRequired,
+        isCalculating: PropTypes.bool.isRequired,
     };
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.userCount + nextProps.userCount <= 3) {
-            return nextProps.userCount !== this.props.userCount;
-        } else {
-            return (
-                nextProps.intersection.length !==
-                    this.props.intersection.length ||
-                !nextProps.intersection.every(
-                    (v, i) => v === this.props.intersection[i]
-                )
-            );
-        }
+        return !nextProps.isCalculating;
     }
 
     render() {
         let content = null;
 
-        if (this.props.userCount === 0) {
+        if (this.props.isMPGamesStaled) {
+            content = (
+                <div className={classes.Error}>
+                    Failed to fetch all multiplayer games list from SteamSpyAPI. Try later.
+                </div>
+            );
+        } else if (this.props.userCount === 0) {
             content = (
                 <div className={classes.Placeholder}>
-                    Start by adding a user.
+                    Common multiplayer games. Start by adding a user.
                 </div>
             );
         } else if (this.props.userCount === 1) {
             content = (
                 <div className={classes.Placeholder}>
-                    Add another user to see the list of common multiplayer
-                    games.
+                    Add another user to see the list of games.
                 </div>
             );
         } else if (this.props.intersection.length > 0) {
@@ -87,11 +84,13 @@ class GamesList extends Component {
 
 const mapStateToProps = state => {
     return {
+        isMPGamesStaled: state.isMPGamesStaled,
         games: state.games,
-        userCount: state.users.filter(user => user.steamId !== undefined)
+        userCount: state.users.filter(({ steamId }) => steamId !== undefined)
             .length,
-        uniqueKey: state.users.map(user => user.steamId || '').join(''),
+        uniqueKey: state.users.map(({ steamId }) => steamId || '').join(''),
         intersection: state.intersection,
+        isCalculating: state.isCalculating,
     };
 };
 

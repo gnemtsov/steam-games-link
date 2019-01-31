@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .Container {
     border-radius: 6px;
     overflow: hidden;
@@ -58,7 +60,7 @@
 .ErrorMessage {
     display: none;
     padding: 0.2rem 1rem 0 1rem;
-    color: #ff6565;
+    color: $error-color;
     font-size: 1.5rem;
     font-weight: 700;
 }
