@@ -52,13 +52,18 @@
     margin: 0.2rem;
     cursor: pointer;
     opacity: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    box-sizing: content-box;
+    padding: 0;
+    border: 2px solid rgba(0, 0, 0, 0);
 
     &:before,
     &:after {
         position: absolute;
         top: 0;
-        left: 0.6rem;
-        content: ' ';
+        left: calc(50% - 0.1rem / 2);
+        content: '';
         height: 1.2rem;
         width: 0.1rem;
         background-color: white;
@@ -73,7 +78,16 @@
     }
 }
 
-.Remove:focus,
+.Remove:hover, .Remove:focus {
+    background-color: #d00000;
+    border: 2px solid #d00000;
+}
+
+.Remove:active {
+    background-color: red;
+    border: 2px solid red;
+}
+
 .Container:hover .Remove {
     opacity: 1;
 }

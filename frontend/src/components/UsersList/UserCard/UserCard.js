@@ -33,7 +33,7 @@ const UserCard = props => {
         cardClasses.push(classes.Loading);
         vanityurlClasses.push(classes.Name);
         avatar = <Spinner />;
-    } else if(props.shake){
+    } else if (props.shake) {
         cardClasses.push(classes.Shake);
     }
 
@@ -48,7 +48,7 @@ const UserCard = props => {
                     {props.vanityurl}
                 </div>
             </div>
-            <div
+            <button
                 key="remove"
                 className={classes.Remove}
                 tabIndex={props.tabIndex}
