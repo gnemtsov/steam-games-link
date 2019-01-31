@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import classes from './Spinner.module.css';
+import classes from './Spinner.module.scss';
 
 const Spinner = props => (
     <div
