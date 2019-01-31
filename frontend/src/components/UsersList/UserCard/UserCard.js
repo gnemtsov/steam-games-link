@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Spinner from './Spinner/Spinner';
 import classes from './UserCard.module.scss';
 
 const UserCard = props => {
+    const removeRef = React.createRef();
+
     const onKeyDownHandler = event => {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -14,41 +17,57 @@ const UserCard = props => {
     const onTouchEndHandler = event => {
         if (
             !document.hasFocus() ||
-            document.activeElement !== event.currentTarget
+            document.activeElement !== removeRef.current
         ) {
             event.preventDefault();
-            event.currentTarget.focus();
+            removeRef.current.focus();
         }
     };
 
+    let cardClasses = [classes.Container];
+    let vanityurlClasses = [classes.Vanityurl];
+    let avatar = (
+        <img className={classes.Avatar} src={props.avatar} alt={props.name} />
+    );
+    if (props.isLoading) {
+        cardClasses.push(classes.Loading);
+        vanityurlClasses.push(classes.Name);
+        avatar = <Spinner />;
+    } else if(props.shake){
+        cardClasses.push(classes.Shake);
+    }
+
     return (
-        <button
-            className={classes.Container}
-            tabIndex={props.tabIndex}
-            onClick={props.clickHandler}
-            onKeyDown={onKeyDownHandler}
-            onTouchEnd={onTouchEndHandler}
-        >
-            <img
-                className={classes.Avatar}
-                src={props.avatar}
-                alt={props.name}
-            />
-            <div className={classes.NamesContainer}>
-                <div className={classes.Name}>{props.name}</div>
-                <div className={classes.RealName}>{props.realName}</div>
+        <div className={cardClasses.join(' ')} onTouchEnd={onTouchEndHandler}>
+            <div key="avatar-container" className={classes.AvatarContainer}>
+                {avatar}
             </div>
-            <div className={classes.Remove} />
-        </button>
+            <div key="names-container" className={classes.NamesContainer}>
+                <div className={classes.Name}>{props.name}</div>
+                <div className={vanityurlClasses.join(' ')}>
+                    {props.vanityurl}
+                </div>
+            </div>
+            <div
+                key="remove"
+                className={classes.Remove}
+                tabIndex={props.tabIndex}
+                ref={removeRef}
+                onClick={props.clickHandler}
+                onKeyDown={onKeyDownHandler}
+            />
+        </div>
     );
 };
 
 UserCard.propTypes = {
-    name: PropTypes.string.isRequired,
-    realName: PropTypes.string.isRequired,
-    avatar: PropTypes.string.isRequired,
+    steamId: PropTypes.string,
+    vanityurl: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    name: PropTypes.string,
+    avatar: PropTypes.string,
     tabIndex: PropTypes.number,
     clickHandler: PropTypes.func.isRequired,
 };
 
-export default UserCard;
+export default React.memo(UserCard);

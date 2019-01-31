@@ -1,0 +1,50 @@
+.Loader {
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+
+.Loader div {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: white;
+    animation: Loader .6s linear infinite;
+}
+
+.Loader div:nth-child(1) {
+    top: 8px;
+    left: 8px;
+    animation-delay: 0s;
+}
+
+.Loader div:nth-child(2) {
+    top: 8px;
+    left: 36px;
+    animation-delay: .3s;
+}
+
+.Loader div:nth-child(3) {
+    top: 36px;
+    left: 8px;
+    animation-delay: .3s;
+}
+
+.Loader div:nth-child(4) {
+    top: 36px;
+    left: 36px;
+    animation-delay: 0s;
+}
+
+
+@keyframes Loader {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}

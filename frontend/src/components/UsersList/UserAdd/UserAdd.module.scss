@@ -7,17 +7,6 @@
 
 .InputContainer {
     flex-grow: 1;
-
-    &:after {
-        content: 'x';
-        visibility: hidden;
-        display: block;
-        color: white;
-        line-height: 0.75rem;
-        padding: 0.2rem 0.3rem 0.3rem 0.3rem;
-        font-size: 0.75rem;
-        margin: 0;
-    }
 }
 
 @media (min-width: $bp1) {
@@ -40,15 +29,23 @@
     }
 }
 
-.InputContainer.Invalid {
-    .Input {
-        background-color: $error-bg-color;
-    }
+.Tip {
+    opacity: 0;
+    transition: opacity 0ms;
+    color: white;
+    line-height: 0.75rem;
+    padding: 0.2rem 0.3rem 0.3rem 0.3rem;
+    font-size: 0.75rem;
+    margin: 0;
+}
 
-    &:after {
-        content: attr(data-error-message);
-        visibility: visible;
-    }
+.Tip.Show {
+    opacity: 1;
+    transition: opacity 600ms ease-in;
+}
+
+.Highlight {
+    color: #00c800;
 }
 
 .Button {

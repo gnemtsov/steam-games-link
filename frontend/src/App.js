@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { CSSTransition } from 'react-transition-group';
+
 import axios from 'axios';
 
 import * as actionTypes from './store/actionTypes';

@@ -5,6 +5,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import * as serviceWorker from './serviceWorker';
 
+import './polyfills.js';
+
 import './index.css';
 import App from './App';
 

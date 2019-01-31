@@ -33,3 +33,23 @@ code {
     opacity: 0.01;
     transition: opacity 500ms ease-in;
 }
+
+/*slide transitions*/
+.slide-enter {
+    transform: translateX(-100%);
+}
+
+.slide-enter-active {
+    transform: translateX(0);
+    transition: transform 800ms ease-out;
+}
+
+.slide-exit {
+    transform: translateX(-100%);
+}
+
+.slide-exit-active {
+    transform: translateX(0);
+    transition: transform 800ms ease-out;
+}
+

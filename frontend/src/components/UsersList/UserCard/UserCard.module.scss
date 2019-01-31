@@ -9,16 +9,14 @@
     border: none;
     box-shadow: 0 0 0 2px #ffb337;
     box-sizing: border-box;
-    cursor: pointer;
-
-    &:focus,
-    &:hover {
-        box-shadow: 0 0 0 2px white;
-        outline: none;
-    }
+    height: 64px;
 }
 
-.NamesContainer{
+.Shake {
+    animation: shake 1s;
+}
+
+.NamesContainer {
     text-align: left;
 }
 
@@ -26,12 +24,24 @@
     color: white;
     padding: 0.2rem 1rem 0 1rem;
     font-size: 1.5rem;
+    transition: font-size 1s;
 }
 
-.RealName {
+.Vanityurl {
     padding: 0 1rem;
     color: #bbb;
     font-size: 0.9rem;
+    transition: font-size 1s;
+}
+
+.Container.Loading {
+    .Name {
+        font-size: 0rem;
+    }
+
+    .Vanityurl {
+        font-size: 1.5rem;
+    }
 }
 
 .Remove {
@@ -41,7 +51,7 @@
     height: 1.2rem;
     margin: 0.2rem;
     cursor: pointer;
-    visibility: hidden;
+    opacity: 0;
 
     &:before,
     &:after {
@@ -63,7 +73,33 @@
     }
 }
 
-.Container:focus .Remove,
+.Remove:focus,
 .Container:hover .Remove {
-    visibility: visible;
+    opacity: 1;
+}
+
+
+/*shake animation*/
+@keyframes shake {
+
+    from,
+    to {
+        transform: rotate(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: rotate(2deg);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: rotate(-2deg);
+        ;
+    }
 }

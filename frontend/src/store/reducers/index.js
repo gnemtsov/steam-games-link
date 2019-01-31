@@ -1,13 +1,12 @@
 import * as actionTypes from '../actionTypes';
 
 const initialState = {
-    multiPlayerGames: [], //an array with multiplayer games, ['appId', 'appId'...]
-    games: {}, //a handbook of games, {[appId]: {app-data}}
-    users: {}, //a handbook of users, {[steamId]: {user-data, games: ['appId', 'appId'...]}}
+    multiPlayerGames: [], //an array of multiplayer games, ['appId', 'appId'...]
+    games: {}, //a handbook games data, {[appId]: {app-data}}
+    users: [], //an array of users, [isLoading, ...user-data, games: ['appId', 'appId'...]}]
     intersection: [], //an array of displayed games, ['appId', 'appId'...]
     isMPGamesLoading: false, //is loading multiplayer games from API?
     isMPGamesStaled: false, //the first user has been added and MPGames are still loading?
-    isUserLoading: false, //is loading a user from API?
     isCalculating: false, //is calculating intersection?
     errorMessage: null, //error message, null || string
 };
@@ -27,7 +26,12 @@ const finishLoadMultiplayerGames = (state, action) => {
 };
 
 const startUserAdd = (state, action) => {
-    return { ...state, isUserLoading: true };
+    const { vanityurl } = action.payload;
+
+    const users = state.users.slice();
+    users.push({ isLoading: true, vanityurl });
+
+    return { ...state, users };
 };
 
 const finishUserAdd = (state, action) => {
@@ -35,13 +39,17 @@ const finishUserAdd = (state, action) => {
     const gamesIds = Object.keys(userData.games);
 
     //fill in new user data and games
-    const users = {
-        ...state.users,
-        [userData.steamId]: {
-            ...userData,
-            games: gamesIds,
-        },
-    };
+    const users = state.users.map(user => {
+        if (user.vanityurl === userData.vanityurl) {
+            return {
+                ...userData,
+                games: gamesIds,
+                isLoading: false
+            };
+        } else {
+            return user;
+        }
+    });
 
     //fill in games "handbook" with new games data
     let newGames = {};
@@ -58,7 +66,6 @@ const finishUserAdd = (state, action) => {
         ...state,
         games,
         users,
-        isUserLoading: false,
         isMPGamesStaled: state.isMPGamesLoading, //set to true if multiplayer games still loading
     };
 };
@@ -66,8 +73,7 @@ const finishUserAdd = (state, action) => {
 const userDelete = (state, action) => {
     const { steamId } = action.payload;
 
-    const users = { ...state.users };
-    delete users[steamId];
+    const users = state.users.filter(user => user.steamId !== steamId);
 
     return { ...state, users };
 };
@@ -78,13 +84,15 @@ const startIntersection = state => {
 
 const doIntersection = state => {
     let intersection = [];
-    const usersIds = Object.keys(state.users);
-    if (usersIds.length > 1) {
-        //gather all users's games and multiplayer games into single array of arrays
-        let allArr = usersIds.map(id => state.users[id].games);
+
+    //gather all users's games into an array of arrays
+    let allArr = state.users.map(user => user.games);
+
+    if (allArr.length > 1) {
+        //add multiplayer games 
         allArr.push(state.multiPlayerGames);
 
-        //calculate intersection of all these arrays
+        //calculate intersection of the arrays
         intersection = allArr.reduce((accumulator, currentArr) =>
             accumulator.filter(v => currentArr.includes(v))
         );
@@ -100,6 +108,7 @@ const doIntersection = state => {
             return 0;
         });
     }
+
     return { ...state, intersection };
 };
 
@@ -108,7 +117,7 @@ const finishIntersection = state => {
 };
 
 const showError = (state, action) => {
-    const {errorMessage} = action.payload;
+    const { errorMessage } = action.payload;
     return { ...state, errorMessage };
 };
 

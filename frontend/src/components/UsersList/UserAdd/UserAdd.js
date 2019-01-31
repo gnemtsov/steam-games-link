@@ -5,27 +5,16 @@ import classes from './UserAdd.module.scss';
 
 class UserAdd extends Component {
     static propTypes = {
-        isLoading: PropTypes.bool.isRequired,
         submitHandler: PropTypes.func.isRequired,
     };
-
-    static getDerivedStateFromProps(props, state) {
-        if (!props.isLoading && state.wasLoading) {
-            //reset and focus input field after user finished loading
-            return { shouldFocus: true, wasLoading: false, inputValue: '' };
-        }
-
-        return { wasLoading: props.isLoading };
-    }
 
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: '', //value of input
-            parsedValue: '', //parsed value of input (vanityurl API param)
-            errorMessage: '', //input validation error message
-            wasLoading: false, //was loading on previous component update?
-            shouldFocus: false, //input should be focused after user was added
+            value: '', //value of input
+            submitValue: '', //value to send to the back-end
+            tip: false, //show tip under the input field?
+            tipHighlightUrl: false, //is value parsed as an url?
         };
 
         this.inputRef = React.createRef();
@@ -38,77 +27,80 @@ class UserAdd extends Component {
         this.inputRef.current.focus();
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.state.shouldFocus) {
-            this.inputRef.current.focus();
-            this.setState({ shouldFocus: false });
-        }
-    }
-
     handleChange(event) {
         const { value } = event.target;
-        const regExp = /^https:\/\/steamcommunity\.com\/id\/([^/]+)$/i;
+        const regExp = /steamcommunity\.com\/id\/([^/]+)$/i;
         const match = regExp.exec(value);
 
-        if (match === null) {
-            this.setState({
-                inputValue: value,
-                parsedValue: '',
-                errorMessage:
-                    'URL format - https://steamcommunity.com/id/[username]',
-            });
-        } else {
-            this.setState({
-                inputValue: value,
-                parsedValue: match[1],
-                errorMessage: '',
-            });
-        }
+        this.setState({
+            value,
+            submitValue: match === null ? value : match[1],
+            tip: value !== '',
+            tipHighlightUrl: match !== null,
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.submitHandler(this.state.parsedValue);
-        this.setState({ parsedValue: '' });
+        const { submitValue } = this.state;
+
+        this.props.submitHandler(submitValue);
+
+        this.inputRef.current.focus();
+
+        this.setState({
+            value: '',
+            submitValue: '',
+            tip: false,
+            tipHighlightUrl: false,
+        });
     }
 
     render() {
-        let inputContainerClasses = [classes.InputContainer];
-        if (this.state.errorMessage !== '') {
-            inputContainerClasses.push(classes.Invalid);
-        }
-
-        let submitButtonClasses = [classes.Button];
-        if (this.props.isLoading) {
-            submitButtonClasses.push(classes.Loading);
+        let tipClasses = [classes.Tip];
+        if (this.state.tip) {
+            tipClasses.push(classes.Show);
         }
 
         return (
             <form className={classes.Container} onSubmit={this.handleSubmit}>
-                <div
-                    className={inputContainerClasses.join(' ')}
-                    data-error-message={this.state.errorMessage}
-                >
+                <div className={classes.InputContainer}>
                     <input
                         type="text"
                         className={classes.Input}
                         ref={this.inputRef}
                         tabIndex="1"
-                        value={this.state.inputValue}
-                        placeholder="Steam vanity URL"
-                        disabled={this.props.isLoading}
+                        value={this.state.value}
+                        placeholder="Username or Steam community url"
                         onChange={this.handleChange}
                     />
+                    <div className={tipClasses.join(' ')}>
+                        <span
+                            className={
+                                !this.state.tipHighlightUrl
+                                    ? classes.Highlight
+                                    : ''
+                            }
+                        >
+                            [username]
+                        </span>
+                        {' or '}
+                        <span
+                            className={
+                                this.state.tipHighlightUrl
+                                    ? classes.Highlight
+                                    : ''
+                            }
+                        >
+                            steamcommunity.com/id/[username]
+                        </span>
+                    </div>
                 </div>
                 <button
                     type="submit"
-                    className={submitButtonClasses.join(' ')}
+                    className={classes.Button}
                     tabIndex="2"
-                    disabled={
-                        this.state.inputValue === '' ||
-                        this.state.errorMessage !== '' ||
-                        this.props.isLoading
-                    }
+                    disabled={this.state.value === ''}
                 >
                     ADD
                 </button>

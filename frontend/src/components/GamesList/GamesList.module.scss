@@ -1,17 +1,25 @@
+.Wrapper {
+    overflow-x: hidden;
+}
+
 .Container {
-    padding: 2rem 0;
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-flex;
+    align-items: flex-start;
 }
 
 .Placeholder {
     color: #b6b6b6;
-    margin-left: 1rem;
+    padding: 2rem 1rem;
     font-size: 1.2rem;
     font-weight: 700;
+    box-sizing: border-box;
+        width: 100vw;
 }
 
 .List {
+    padding: 2rem 0;
     display: flex;
     flex-wrap: wrap;
+    box-sizing: border-box;
+        width: 100vw;
 }

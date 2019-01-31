@@ -27,9 +27,9 @@ function* loadMultiplayerGames() {
 }
 
 function* userAdd(action) {
-    yield put({ type: actionTypes.R_START_USER_ADD });
-
     const { vanityurl } = action.payload;
+
+    yield put({ type: actionTypes.R_START_USER_ADD, payload: { vanityurl } });
 
     const response = yield call(axios.get, `/userownedgames/${vanityurl}`);
     if (response === undefined) {
@@ -38,17 +38,16 @@ function* userAdd(action) {
 
     yield put({
         type: actionTypes.R_FINISH_USER_ADD,
-        payload: response.data,
+        payload: { ...response.data, vanityurl },
     });
 
     yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
 }
 
 function* userDelete(action) {
-    yield put({
-        type: actionTypes.R_USER_DELETE,
-        payload: action.payload,
-    });
+    const { steamId } = action.payload;
+
+    yield put({ type: actionTypes.R_USER_DELETE, payload: { steamId } });
 
     yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
 }
