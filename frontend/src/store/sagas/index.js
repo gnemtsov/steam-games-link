@@ -9,7 +9,8 @@ Sagas logic notes
 - Load array of multiplayer games (loadMultiplayerGames saga) once when App component is mounted.
 - When user is added add his/her data, games list and games data to the store (userAdd saga).
 - When user is deleted remove user data and games list from the store (userDelete saga).
-- Each time when a user is added or deleted recalculate intersection (calculateIntersection saga).
+
+Each time when a user is added or deleted recalculate intersection.
 */
 
 function* loadMultiplayerGames() {
@@ -41,7 +42,8 @@ function* userAdd(action) {
         payload: { ...response.data, vanityurl },
     });
 
-    yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
+    yield delay(500);
+    yield put({ type: actionTypes.R_DO_INTERSECTION });
 }
 
 function* userDelete(action) {
@@ -49,14 +51,8 @@ function* userDelete(action) {
 
     yield put({ type: actionTypes.R_USER_DELETE, payload: { steamId } });
 
-    yield put({ type: actionTypes.S_CALCULATE_INTERSECTION });
-}
-
-function* calculateIntersection(action) {
-    yield put({ type: actionTypes.R_START_INTERSECTION });
-    //calculating intersection should not take less than 1.3 sec to prevent UI blinking
-    yield all([delay(1300), put({ type: actionTypes.R_DO_INTERSECTION })]);
-    yield put({ type: actionTypes.R_FINISH_INTERSECTION });
+    yield delay(500);
+    yield put({ type: actionTypes.R_DO_INTERSECTION });
 }
 
 export default function* rootSaga() {
@@ -64,6 +60,5 @@ export default function* rootSaga() {
         takeEvery(actionTypes.S_LOAD_MULTIPLAYER_GAMES, loadMultiplayerGames),
         takeEvery(actionTypes.S_USER_ADD, userAdd),
         takeEvery(actionTypes.S_USER_DELETE, userDelete),
-        takeEvery(actionTypes.S_CALCULATE_INTERSECTION, calculateIntersection),
     ]);
 }

@@ -7,7 +7,6 @@ const initialState = {
     intersection: [], //an array of displayed games, ['appId', 'appId'...]
     isMPGamesLoading: false, //is loading multiplayer games from API?
     isMPGamesStaled: false, //the first user has been added and MPGames are still loading?
-    isCalculating: false, //is calculating intersection?
     errorMessage: null, //error message, null || string
 };
 
@@ -44,7 +43,7 @@ const finishUserAdd = (state, action) => {
             return {
                 ...userData,
                 games: gamesIds,
-                isLoading: false
+                isLoading: false,
             };
         } else {
             return user;
@@ -78,10 +77,6 @@ const userDelete = (state, action) => {
     return { ...state, users };
 };
 
-const startIntersection = state => {
-    return { ...state, isCalculating: true };
-};
-
 const doIntersection = state => {
     let intersection = [];
 
@@ -89,7 +84,7 @@ const doIntersection = state => {
     let allArr = state.users.map(user => user.games);
 
     if (allArr.length > 1) {
-        //add multiplayer games 
+        //add multiplayer games
         allArr.push(state.multiPlayerGames);
 
         //calculate intersection of the arrays
@@ -112,10 +107,6 @@ const doIntersection = state => {
     return { ...state, intersection };
 };
 
-const finishIntersection = state => {
-    return { ...state, isCalculating: false };
-};
-
 const showError = (state, action) => {
     const { errorMessage } = action.payload;
     return { ...state, errorMessage };
@@ -130,24 +121,28 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.R_START_LOAD_MULTIPLAYER_GAMES:
             return startLoadMultiplayerGames(state, action);
+
         case actionTypes.R_FINISH_LOAD_MULTIPLAYER_GAMES:
             return finishLoadMultiplayerGames(state, action);
+
         case actionTypes.R_START_USER_ADD:
             return startUserAdd(state, action);
+
         case actionTypes.R_FINISH_USER_ADD:
             return finishUserAdd(state, action);
+
         case actionTypes.R_USER_DELETE:
             return userDelete(state, action);
-        case actionTypes.R_START_INTERSECTION:
-            return startIntersection(state, action);
+
         case actionTypes.R_DO_INTERSECTION:
             return doIntersection(state, action);
-        case actionTypes.R_FINISH_INTERSECTION:
-            return finishIntersection(state, action);
+
         case actionTypes.R_SHOW_ERROR:
             return showError(state, action);
+
         case actionTypes.R_HIDE_ERROR:
             return hideError(state, action);
+
         default:
             return state;
     }

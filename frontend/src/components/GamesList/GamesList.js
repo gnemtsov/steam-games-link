@@ -19,13 +19,17 @@ class GamesList extends Component {
     };
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (
-            nextProps.uniqueKey !== this.props.uniqueKey ||
-            nextProps.intersection.length !== this.props.intersection.length ||
-            !nextProps.intersection.every(
-                (v, i) => v === this.props.intersection[i]
-            )
-        );
+        if (nextProps.userCount < 2) {
+            return nextProps.userCount !== this.props.userCount;
+        } else {
+            return (
+                nextProps.intersection.length !==
+                    this.props.intersection.length ||
+                !nextProps.intersection.every(
+                    (v, i) => v === this.props.intersection[i]
+                )
+            );
+        }
     }
 
     render() {
