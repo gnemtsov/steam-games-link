@@ -70,9 +70,10 @@ const finishUserAdd = (state, action) => {
 };
 
 const userDelete = (state, action) => {
-    const { steamId } = action.payload;
+    const { index } = action.payload;
 
-    const users = state.users.filter(user => user.steamId !== steamId);
+    const users = state.users.slice();
+    users.splice(index, 1);
 
     return { ...state, users };
 };

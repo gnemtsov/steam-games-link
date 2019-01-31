@@ -32,8 +32,24 @@ REDIS_PORT='6379'
 Enjoy :smiley:
 
 # Accounts for testing
+*Public profiles
 ```
 gwellir
 molotoko
 Tryr
+```
+
+Profiles with no games
+```
+fewfewfewf
+```
+
+Private profiles
+```
+vvvvvvvvvvvv
+```
+
+Non-existent profiles
+```
+32232332f23f23
 ```

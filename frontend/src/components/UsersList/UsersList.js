@@ -110,7 +110,7 @@ class UsersList extends Component {
                                         tabIndex={tabIndex}
                                         shake={shake}
                                         clickHandler={() =>
-                                            this.props.userDelete(user.steamId)
+                                            this.props.userDelete(i)
                                         }
                                     />
                                 </ErrorBoundary>
@@ -137,10 +137,10 @@ const mapDispatchToProps = dispatch => {
                 type: actionTypes.S_USER_ADD,
                 payload: { vanityurl },
             }),
-        userDelete: steamId =>
+        userDelete: i =>
             dispatch({
                 type: actionTypes.S_USER_DELETE,
-                payload: { steamId },
+                payload: { index: i },
             }),
     };
 };

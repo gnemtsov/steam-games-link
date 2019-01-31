@@ -134,12 +134,18 @@ app.get(
         );
 
         const result = await axios.get(url);
-        const { success, steamid } = result.data.response;
+        const { success, steamid, message } = result.data.response;
 
         if (success !== 1) {
-            return next(
-                new Error('API userownedgames (failed to fetch steamid)')
-            );
+            let errorMessage;
+            switch (success) {
+                case 42:
+                    errorMessage = 'User not found';
+                    break;
+                default:
+                    errorMessage = `STEAM API. ISteamUser - ResolveVanityURL: ${message}`;
+            }
+            return next(new Error(errorMessage));
         }
 
         req.steamId = steamid;
@@ -170,6 +176,11 @@ app.get(
         ]);
 
         const [userData] = result1.data.response.players;
+
+        if (userData.communityvisibilitystate !== 3) {
+            return next(new Error('Not a public profile'));
+        }
+
         const {
             personaname: name,
             avatarmedium: avatar,
@@ -178,12 +189,15 @@ app.get(
 
         const { games: userGames } = result2.data.response;
         const games = {};
-        userGames.forEach(({ appid, name, img_logo_url }) => {
-            games[appid] = {
-                name,
-                logo: img_logo_url,
-            };
-        });
+
+        if (userGames !== undefined) {
+            userGames.forEach(({ appid, name, img_logo_url }) => {
+                games[appid] = {
+                    name,
+                    logo: img_logo_url,
+                };
+            });
+        }
 
         res.status(200).json({
             steamId,
@@ -197,8 +211,8 @@ app.get(
 
 //Custom Express error handler
 app.use((err, req, res, next) => {
-    console.log(err); //in a real app use custom logger to report errors
-    next(err); //call default error handler
+    console.log('Error middleware', err); //in a real app use custom logger to report errors
+    res.status(500).send(err.message);
 });
 
 //Start API

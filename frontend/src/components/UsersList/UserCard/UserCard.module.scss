@@ -16,6 +16,11 @@
     animation: shake 800ms;
 }
 
+.AvatarContainer {
+    width: 64px;
+    height: 64px;
+}
+
 .NamesContainer {
     text-align: left;
 }
@@ -78,7 +83,8 @@
     }
 }
 
-.Remove:hover, .Remove:focus {
+.Remove:hover,
+.Remove:focus {
     background-color: #d00000;
     border: 2px solid #d00000;
 }

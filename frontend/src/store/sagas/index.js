@@ -47,9 +47,9 @@ function* userAdd(action) {
 }
 
 function* userDelete(action) {
-    const { steamId } = action.payload;
+    const { index } = action.payload;
 
-    yield put({ type: actionTypes.R_USER_DELETE, payload: { steamId } });
+    yield put({ type: actionTypes.R_USER_DELETE, payload: { index } });
 
     yield delay(500);
     yield put({ type: actionTypes.R_DO_INTERSECTION });
