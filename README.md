@@ -3,7 +3,7 @@
 A small app that takes steam community profiles urls and shows common multiplayer games.
 
 # Prerequisites
-Node.js, yarn, redis.
+Node.js, yarn, redis and [Redux DevTools extension](https://github.com/zalmoxisus/redux-devtools-extension).
 
 # Installation (local)
 1. Download or git clone the source code
@@ -29,6 +29,7 @@ REDIS_PORT='6379'
 # Run locally
 1. Run `yarn start` in the backend folder
 2. Run `yarn start` in the frontend folder
+
 Enjoy :smiley:
 
 # Accounts for testing
