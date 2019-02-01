@@ -45,9 +45,19 @@ const UserCard = props => {
                 {avatar}
             </div>
             <div key="names-container" className={classes.NamesContainer}>
-                <div className={classes.Name}>{props.name}</div>
-                <div className={classes.ErrorMessage}>{props.errorMessage}</div>
-                <div className={vanityurlClasses.join(' ')}>
+                <div className={classes.Name} title={props.name}>
+                    {props.name}
+                </div>
+                <div
+                    className={classes.ErrorMessage}
+                    title={props.errorMessage}
+                >
+                    {props.errorMessage}
+                </div>
+                <div
+                    className={vanityurlClasses.join(' ')}
+                    title={props.vanityurl}
+                >
                     {props.vanityurl}
                 </div>
             </div>
