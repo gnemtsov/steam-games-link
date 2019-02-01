@@ -33,7 +33,7 @@ REDIS_PORT='6379'
 Enjoy :smiley:
 
 # Accounts for testing
-*Public profiles
+Public profiles
 ```
 gwellir
 molotoko
