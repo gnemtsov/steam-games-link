@@ -24,7 +24,16 @@
 }
 
 .NamesContainer {
+    overflow: hidden;
     text-align: left;
+}
+
+.Name,
+.Vanityurl,
+.ErrorMessage {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .Name {
@@ -75,6 +84,8 @@
     background-color: rgba(0, 0, 0, 0);
     width: 1.2rem;
     height: 1.2rem;
+    min-width: 1.2rem;
+    min-height: 1.2rem;
     margin: 0.2rem;
     cursor: pointer;
     opacity: 0;
@@ -106,6 +117,7 @@
 
 .Remove:hover,
 .Remove:focus {
+    opacity: 1;
     background-color: #d00000;
     border: 2px solid #d00000;
 }

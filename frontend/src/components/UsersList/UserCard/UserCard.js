@@ -14,16 +14,6 @@ const UserCard = props => {
         }
     };
 
-    const onTouchEndHandler = event => {
-        if (
-            !document.hasFocus() ||
-            document.activeElement !== removeRef.current
-        ) {
-            event.preventDefault();
-            removeRef.current.focus();
-        }
-    };
-
     let cardClasses = [classes.Container];
     let vanityurlClasses = [classes.Vanityurl];
     let avatar = (
@@ -34,19 +24,23 @@ const UserCard = props => {
         cardClasses.push(classes.Loading);
         vanityurlClasses.push(classes.Name);
         avatar = <Spinner />;
-    } 
-    
+    }
+
     if (props.errorMessage) {
         cardClasses.push(classes.Failed);
         avatar = <Spinner freeze />;
-    } 
-    
+    }
+
     if (props.shake) {
         cardClasses.push(classes.Shake);
     }
 
     return (
-        <div className={cardClasses.join(' ')} onTouchEnd={onTouchEndHandler}>
+        <div
+            className={cardClasses.join(' ')}
+            tabIndex="0"
+            onFocus={() => removeRef.current.focus()}
+        >
             <div key="avatar-container" className={classes.AvatarContainer}>
                 {avatar}
             </div>
@@ -60,7 +54,6 @@ const UserCard = props => {
             <button
                 key="remove"
                 className={classes.Remove}
-                tabIndex={props.tabIndex}
                 ref={removeRef}
                 onClick={props.clickHandler}
                 onKeyDown={onKeyDownHandler}
@@ -76,7 +69,6 @@ UserCard.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     name: PropTypes.string,
     avatar: PropTypes.string,
-    tabIndex: PropTypes.number,
     clickHandler: PropTypes.func.isRequired,
 };
 

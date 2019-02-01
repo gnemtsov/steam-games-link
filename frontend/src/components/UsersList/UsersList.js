@@ -90,8 +90,6 @@ class UsersList extends Component {
                 </div>
                 <TransitionGroup className={classes.List}>
                     {this.props.users.map((user, i) => {
-                        const tabIndex = 10 + i;
-
                         const shake = this.state.shakingUsers
                             .map(({ vanityurl }) => vanityurl)
                             .includes(user.vanityurl);
@@ -106,7 +104,6 @@ class UsersList extends Component {
                                 <ErrorBoundary>
                                     <UserCard
                                         {...user}
-                                        tabIndex={tabIndex}
                                         shake={shake}
                                         clickHandler={() =>
                                             this.props.userDelete(i)

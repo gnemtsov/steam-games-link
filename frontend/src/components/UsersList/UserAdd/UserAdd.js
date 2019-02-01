@@ -69,7 +69,7 @@ class UserAdd extends Component {
                         type="text"
                         className={classes.Input}
                         ref={this.inputRef}
-                        tabIndex="1"
+                        tabIndex="0"
                         value={this.state.value}
                         placeholder="Username or Steam community url"
                         onChange={this.handleChange}
@@ -99,7 +99,7 @@ class UserAdd extends Component {
                 <button
                     type="submit"
                     className={classes.Button}
-                    tabIndex="2"
+                    tabIndex="0"
                     disabled={this.state.value === ''}
                 >
                     ADD
