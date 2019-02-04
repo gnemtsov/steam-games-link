@@ -1,6 +1,30 @@
 
 # About
-A small app that takes steam community profiles urls and shows common multiplayer games.
+A small app that takes Steam community usernames and shows common multiplayer games.
+
+# Some accounts for testing
+Public profiles
+```
+gwellir
+molotoko
+Tryr
+2f2f
+```
+
+Profiles with no games
+```
+fewfewfewf
+```
+
+Private profiles
+```
+vvvvvvvvvvvv
+```
+
+Non-existent profiles
+```
+32232332f23f23
+```
 
 # Prerequisites
 Node.js, yarn, redis and [Redux DevTools extension](https://github.com/zalmoxisus/redux-devtools-extension).
@@ -31,27 +55,3 @@ REDIS_PORT='6379'
 2. Run `yarn start` in the frontend folder
 
 Enjoy :smiley:
-
-# Accounts for testing
-Public profiles
-```
-gwellir
-molotoko
-Tryr
-2f2f
-```
-
-Profiles with no games
-```
-fewfewfewf
-```
-
-Private profiles
-```
-vvvvvvvvvvvv
-```
-
-Non-existent profiles
-```
-32232332f23f23
-```
